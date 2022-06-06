@@ -5,6 +5,7 @@ import mutler from 'multer'
 import mime from 'mime-types'
 import {randomBytes} from 'crypto'
 import fs from 'fs/promises'
+import {existsSync, mkdirSync} from 'fs'
 import {dirname, basename} from 'path'
 
 import {fileTypeFromFile} from 'file-type'
@@ -16,7 +17,11 @@ const whitelist = process.env.whitelist?.split(' ') || [
     'image/jpg',
     'image/webp'
 ]
+console.log(whitelist)
 
+if (!existsSync('uploads')){
+    mkdirSync('uploads');
+}
 
 
 const storage = mutler.diskStorage({
@@ -91,7 +96,7 @@ app.delete('/file', async (req, res, next) => {
 
 
 
-app.listen(3000, () => {
+app.listen(80, () => {
     console.log("ready")
 })
 function errorHandler (err, req, res, next) {
